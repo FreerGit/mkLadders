@@ -1,0 +1,3 @@
+#ignore folders that should not be copied, speed up!
+.next
+node_modules
