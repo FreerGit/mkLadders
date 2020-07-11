@@ -13,9 +13,9 @@ services:
             - "8000:8000"
         volumes:
             - "./backend:/app"
+    #use a mongoDB image, free code >:) 
     database:
-        build: database
-        ports: 
-            - "5000:5000"
+        image: mongo
+        hostname: database
         volumes:
-            - "./database:/app"
+            - ".database:/database/data"
