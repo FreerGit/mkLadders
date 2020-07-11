@@ -1,0 +1,17 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node .",
+    "dev": "ts-node-dev --respawn --transpile-only ./src/*.ts"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "ts-node-dev": "^1.0.0-pre.51",
+    "typescript": "^3.9.6"
+  }
+}

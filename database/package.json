@@ -1,0 +1,14 @@
+{
+  "name": "database",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only ./src/*.ts"
+  },
+  "devDependencies": {
+    "ts-node-dev": "^1.0.0-pre.51",
+    "typescript": "^3.9.6"
+  },
+  "dependencies": {
+    "mongodb": "^3.5.9",
+    "mongoose": "^5.9.23"
+  }
+}
