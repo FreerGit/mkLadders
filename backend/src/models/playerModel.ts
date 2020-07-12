@@ -7,26 +7,20 @@ const playerDetailSchema: Schema = new Schema({
 	rating: Number,
 });
 
-const playerInMatchSchema: Schema = new Schema({
-	drvier: Number,
-	xd: String,
-	rating: Number,
-});
-
-const matchSchema: Schema = new Schema({
-	players: {
-		type: [playerInMatchSchema],
-		max: 4,
-	},
-});
-
 const playerSchema: Schema = new Schema({
-	previousMatches: [matchSchema],
 	user: playerDetailSchema,
 
 });
+export interface playerDetailInterface {
+    driver: number,
+    username: String,
+    rating: number
+}
 
-const Player = mongoose.model('Player', playerSchema);
+export interface playerInterface extends mongoose.Document {
+    // previousMatches: [matchInterface],
+    user: playerDetailInterface,
+}
+
+export const Player = mongoose.model<playerInterface>('Player', playerSchema);
 playerSchema.plugin(uniqueValidator, { message: 'ERROR, {PATH} is taken!' });
-
-export default Player;

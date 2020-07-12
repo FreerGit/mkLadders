@@ -1,7 +1,7 @@
 // import { Request, Response } from 'express';
 import { Request, Response } from 'express';
 import { json } from 'body-parser';
-import Player from '../playerModel';
+import { Player } from '../models/playerModel';
 
 export const AllPlayers = async (req: Request, res: Response) => {
 	await Player.find({}).exec((err: any, players: any) => {
@@ -39,17 +39,3 @@ export const RemoveAllPlayers = async (req: Request, res: Response) => {
 		}
 	});
 };
-
-interface playerList {
-    users: [String]
-}
-
-export const AddMatch = async (req: Request, res: Response) => {
-	const requestedPlayerList: playerList = req.body;
-	const allPlayersInMatch = (playerUsernames: Array<String>) => {
-		playerUsernames.map((name: String) => console.log(name));
-	};
-	await allPlayersInMatch(requestedPlayerList.users);
-	// console.log(test);
-};
-// Player.find({ username: name })
