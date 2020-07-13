@@ -2,6 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 
 const playerDetailSchema: Schema = new Schema({
+	id: String,
 	driver: Number,
 	username: { type: String, unique: true },
 	rating: Number,
@@ -12,6 +13,7 @@ const playerSchema: Schema = new Schema({
 
 });
 export interface playerDetailInterface {
+    _id: String,
     driver: number,
     username: String,
     rating: number

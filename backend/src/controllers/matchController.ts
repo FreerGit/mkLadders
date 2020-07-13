@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import { json } from 'body-parser';
-import { Match } from '../models/matchModel';
+import { Match, matchInterface } from '../models/matchModel';
 import { Player, playerInterface, playerDetailInterface } from '../models/playerModel';
-import EloMatch from './eloCalculator';
+import RatingCalculator from './RatingCalculator';
 import { AddPlayer } from './playerController';
 
 interface playerList {
@@ -10,19 +10,24 @@ interface playerList {
 }
 
 const calculateRating = (players: playerDetailInterface[]) => {
-	const match = new EloMatch();
-	console.log(players);
+	const match = new RatingCalculator();
+	// console.log(players);
+
 	players.map((player, index) => {
-		match.addPlayer(player.username, index + 1, player.rating);
+		match.addPlayer(player._id, player.username, index + 1, player.rating);
 	});
 	match.calculateELOs();
-	players.map((player) => {
-
+    const calculatedRace = match.race;
+    const 
+	// console.log(calculatedRace);
+	calculatedRace.map((player) => {
+		 console.log(player);
 	});
-	console.log(match.getELO('test1'));
-	console.log(match.getELO('test2'));
-	console.log(match.getELO('test3'));
-	console.log(match.getELO('test4'));
+
+	// console.log(match.getELO('test1'));
+	// console.log(match.getELO('test2'));
+	// console.log(match.getELO('test3'));
+	// console.log(match.getELO('test4'));
 };
 
 const findUsersInMatch = async (requestedPlayerList: playerList) => {

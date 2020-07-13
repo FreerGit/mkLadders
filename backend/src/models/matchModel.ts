@@ -2,9 +2,12 @@ import mongoose, { Schema } from 'mongoose';
 import { playerDetailSchema } from './playerModel';
 
 const playerInMatchSchema: Schema = new Schema({
-	drvier: Number,
+	id: String,
+	driver: Number,
 	username: String,
 	rating: Number,
+	placing: Number,
+	ratingAfter: Number,
 });
 const matchSchema: Schema = new Schema({
 	players: {
