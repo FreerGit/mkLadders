@@ -1,5 +1,6 @@
 interface player {
-    id: String,
+    _id: String,
+    driver: number,
     name: String,
     placement: number,
 	ratingBefore: number,
@@ -14,9 +15,10 @@ export default class RatingCalculator {
 		this.race = [];
 	}
 
-	addPlayer(id:String, name: String, placement: number, rating: number) {
+	addPlayer(id:String, driverIcon: number, name: String, placement: number, rating: number) {
 		const player = {
-			id,
+			_id: id,
+			driver: driverIcon,
 			name,
 			placement,
 			ratingBefore: rating,
@@ -26,30 +28,10 @@ export default class RatingCalculator {
 		this.race.push(player);
 	}
 
-	getELO(name: String) {
-		let found;
-		for (let player = 0; player < this.race.length; player++) {
-			if (this.race[player].name === name) {
-				found = this.race[player].ratingAfter;
-			}
-		}
-		return found;
-	}
-
-	getELOChange(name: String) {
-		let found;
-		for (let player = 0; player < this.race.length; player++) {
-			if (this.race[player].name === name) {
-				return this.race[player].ratingChange;
-			}
-		}
-		return found;
-	}
-
 	calculateELOs() {
 		const n = this.race.length; // N of players in race
 		// Calculate the constant depending on N players (See the official elo formula)
-		const k = 32 / (n - 1);
+		const k = 145 / (n - 1);
 
 		// Calculate permutation of games. First player wins "1v1" againts all players
 		// placing below first place. Second place loses "1v1" to above player and subsequently
@@ -66,15 +48,18 @@ export default class RatingCalculator {
 
 					// How did player place relative to foe?
 					if (curPlace < oppPlace) {
+						// console.log(`Won: ${this.race[player].name} Lost: ${this.race[foe].name}`);
 						s = 1;
 					} else if (curPlace === oppPlace) {
+						// console.log(`tie: ${this.race[player].name} tie: ${this.race[foe].name}`);
 						s = 0.5;
 					} else {
+						// console.log(`Lost: ${this.race[player].name} Won: ${this.race[foe].name}`);
 						s = 0;
 					}
 					// Again, see official elo formula
 					// https://www.geeksforgeeks.org/elo-rating-algorithm/
-					const ea = 1 / (1 + 10 ** ((oppRating - curRating) / 400));
+					const ea = 1 / (1 + (10 ** ((oppRating - curRating) / 400)));
 					this.race[player].ratingChange += Math.round(k * (s - ea));
 				}
 			}

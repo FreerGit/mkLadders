@@ -1,24 +1,32 @@
 import mongoose, { Schema } from 'mongoose';
-import { playerDetailSchema } from './playerModel';
 
 const playerInMatchSchema: Schema = new Schema({
 	id: String,
 	driver: Number,
-	username: String,
-	rating: Number,
-	placing: Number,
+	name: String,
+	placement: Number,
+	ratingBefore: Number,
 	ratingAfter: Number,
+	ratingChange: Number,
 });
 const matchSchema: Schema = new Schema({
-	players: {
+	race: {
 		type: [playerInMatchSchema],
 		validate: {
-			validator: (arr: Array<playerDetailSchema>) => arr.length < 5 && arr.length > 1,
+			validator: (arr: Array<playerInMatchInterface>) => arr.length < 5 && arr.length > 1,
 		},
 		message: 'Match has to few or too many players!',
 	},
 });
-export interface matchInterface extends mongoose.Document{
-	players: [playerDetailSchema],
+interface playerInMatchInterface extends mongoose.Document{
+	id: String,
+	driver: Number,
+	name: String,
+	placement: Number,
+	ratingBefore: Number,
+	ratingAfter: Number,
+	ratingChange: Number,
 }
-export const Match = mongoose.model<matchInterface>('Match', matchSchema);
+
+const Match = mongoose.model<playerInMatchInterface>('Match', matchSchema);
+export default Match;

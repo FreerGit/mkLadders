@@ -4,25 +4,16 @@ import uniqueValidator from 'mongoose-unique-validator';
 const playerDetailSchema: Schema = new Schema({
 	id: String,
 	driver: Number,
-	username: { type: String, unique: true },
+	name: { type: String, unique: true },
 	rating: Number,
 });
 
-const playerSchema: Schema = new Schema({
-	user: playerDetailSchema,
-
-});
-export interface playerDetailInterface {
+export interface playerDetailInterface extends mongoose.Document{
     _id: String,
     driver: number,
-    username: String,
+    name: String,
     rating: number
 }
 
-export interface playerInterface extends mongoose.Document {
-    // previousMatches: [matchInterface],
-    user: playerDetailInterface,
-}
-
-export const Player = mongoose.model<playerInterface>('Player', playerSchema);
-playerSchema.plugin(uniqueValidator, { message: 'ERROR, {PATH} is taken!' });
+export const Player = mongoose.model<playerDetailInterface>('Player', playerDetailSchema);
+playerDetailSchema.plugin(uniqueValidator, { message: 'ERROR, {PATH} is taken!' });
