@@ -24,12 +24,12 @@ export interface matchInterface {
 }
 export interface playerInMatchInterface extends mongoose.Document{
 	id: String,
-	driver: Number,
+	driver: number,
 	name: String,
-	placement: Number,
-	ratingBefore: Number,
-	ratingAfter: Number,
-	ratingChange: Number,
+	placement: number,
+	ratingBefore: number,
+	ratingAfter: number,
+	ratingChange: number,
 }
 
 const Match = mongoose.model<playerInMatchInterface>('Match', matchSchema);

@@ -1,6 +1,5 @@
 // import { Request, Response } from 'express';
 import { Request, Response } from 'express';
-import { json } from 'body-parser';
 import { Player } from '../models/playerModel';
 
 export const AllPlayers = async (req: Request, res: Response) => {

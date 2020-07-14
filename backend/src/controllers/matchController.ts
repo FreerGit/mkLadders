@@ -1,9 +1,7 @@
 import { Request, Response } from 'express';
-import { json } from 'body-parser';
-import Match, { playerInMatchInterface, matchInterface } from '../models/matchModel';
+import Match, { matchInterface } from '../models/matchModel';
 import { Player, playerDetailInterface } from '../models/playerModel';
 import RatingCalculator from './RatingCalculator';
-import { AddPlayer } from './playerController';
 
 interface player {
     placement: number,
@@ -15,7 +13,7 @@ interface playerList {
 }
 
 const updatePlayerRatings = (players: matchInterface) => {
-	players.race.map((player) => {
+	players.race.forEach((player) => {
 		Player.findByIdAndUpdate(player._id, { rating: player.ratingAfter }).exec();
 	});
 };
@@ -23,7 +21,7 @@ const updatePlayerRatings = (players: matchInterface) => {
 const calculateRating = (players: playerDetailInterface[]) => {
 	const match = new RatingCalculator();
 
-	players.map((player, index) => {
+	players.forEach((player, index) => {
 		match.addPlayer(player._id, player.driver, player.name, index + 1, player.rating);
 	});
 	match.calculateELOs();
@@ -32,7 +30,9 @@ const calculateRating = (players: playerDetailInterface[]) => {
 
 const findUsersInMatch = async (requestedPlayerList: playerList) => {
 	async function test() {
-		const sortedPlayers = requestedPlayerList.users.map((player: player) => Player.findById(player.competitor).exec());
+		const sortedPlayers = requestedPlayerList.users.map(
+			(player: player) => Player.findById(player.competitor).exec(),
+		);
 		return sortedPlayers;
 	}
 	const placements = await Promise.all(await test()).then((values) => values);
