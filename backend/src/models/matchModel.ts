@@ -18,7 +18,11 @@ const matchSchema: Schema = new Schema({
 		message: 'Match has to few or too many players!',
 	},
 });
-interface playerInMatchInterface extends mongoose.Document{
+
+export interface matchInterface {
+    race: [playerInMatchInterface]
+}
+export interface playerInMatchInterface extends mongoose.Document{
 	id: String,
 	driver: Number,
 	name: String,

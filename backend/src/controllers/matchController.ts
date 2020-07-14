@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { json } from 'body-parser';
-import Match from '../models/matchModel';
+import Match, { playerInMatchInterface, matchInterface } from '../models/matchModel';
 import { Player, playerDetailInterface } from '../models/playerModel';
 import RatingCalculator from './RatingCalculator';
 import { AddPlayer } from './playerController';
@@ -13,6 +13,12 @@ interface player {
 interface playerList {
     users: [player]
 }
+
+const updatePlayerRatings = (players: matchInterface) => {
+	players.race.map((player) => {
+		Player.findByIdAndUpdate(player._id, { rating: player.ratingAfter }).exec();
+	});
+};
 
 const calculateRating = (players: playerDetailInterface[]) => {
 	const match = new RatingCalculator();
@@ -30,22 +36,17 @@ const findUsersInMatch = async (requestedPlayerList: playerList) => {
 		return sortedPlayers;
 	}
 	const placements = await Promise.all(await test()).then((values) => values);
-
-	// console.log(placements);
-	// console.log(omega);
-
-	// const foundPlayers = await Player.find().where('_id').in(competitorInfo).exec();
-
 	return placements;
 };
 
-const createMatch = async (players: playerDetailInterface[], playerList: playerList) => {
+const createMatch = async (players: any, playerList: playerList) => {
 	const matchParticipants: playerDetailInterface[] = players.map(
 		(playerSchema: playerDetailInterface) => playerSchema,
 	);
 	const updatedRatings = calculateRating(matchParticipants);
 	const newMatch = new Match(updatedRatings);
 	newMatch.save();
+	updatePlayerRatings(newMatch);
 };
 
 export const AddMatch = async (req: Request, res: Response) => {
@@ -56,7 +57,12 @@ export const AddMatch = async (req: Request, res: Response) => {
 		res.send('A match must have more than 2 players and 4 or less!');
 		return;
 	}
-	const users: playerDetailInterface[] = await findUsersInMatch(requestedPlayerList);
+	const users: (playerDetailInterface| null)[] = await findUsersInMatch(requestedPlayerList);
+	if (users === null || users === undefined) {
+		res.status(400);
+		res.send("Couldn't add match!");
+		return;
+	}
 
 	await createMatch(users, requestedPlayerList);
 	res.status(200);
