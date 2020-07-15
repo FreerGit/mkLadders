@@ -43,6 +43,7 @@ const AddPlayers = () => {
                     <MenuItem value={30}>Thirty</MenuItem>
                 </Select>
             </form>
+            <img src="/mario.png"  alt="my image" />
         </div>
     )
 }
