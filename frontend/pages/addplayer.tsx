@@ -1,11 +1,13 @@
-import Layout from '../components/Layout'
-
+import Layout from '../components/Layout';
+import AddPlayer from '../components/AddPlayer';
 const Addplayer = () => {
     return (
         <>
             <Layout>
             </Layout>
-            <p>hej</p>
+
+            <AddPlayer>
+            </AddPlayer>
         </>
     )
 }
