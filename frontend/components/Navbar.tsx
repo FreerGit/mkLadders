@@ -3,6 +3,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
+import Link from 'next/link';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -37,7 +38,10 @@ const ButtonAppBar = () => {
           <img src="/marioIcon.png" className={classes.img} alt="my image" />
 
           <Button variant="contained" color="secondary" 
-            className={classes.addm}>Add Player!</Button>
+          
+            className={classes.addm} href="/addplayer" >
+                Add Player!
+            </Button>
         </Toolbar>
       </AppBar>
       </div>
