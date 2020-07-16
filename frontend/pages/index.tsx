@@ -30,6 +30,6 @@ export async function getServerSideProps () {
     console.log(json)
     // Pass data to the page via props
     return { props: { AllPlayers: json } }
-  }
+}
 
 export default IndexPage
