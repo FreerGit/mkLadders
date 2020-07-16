@@ -1,6 +1,6 @@
 import Layout from '../components/Layout';
 import AddPlayer from '../components/AddPlayer';
-const Addplayer = () => {
+const addPlayer = () => {
     return (
         <>
             <Layout>
@@ -12,4 +12,4 @@ const Addplayer = () => {
     )
 }
 
-export default Addplayer;
+export default addPlayer;

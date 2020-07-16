@@ -33,12 +33,13 @@ const ButtonAppBar = () => {
       <AppBar position="static" color="primary">
         <Toolbar>
           <Button variant="contained" color="secondary" 
-            className={classes.addm}>Add Match!</Button>
+            className={classes.addm} href="/addmatch">
+                Add Match!
+            </Button>
 
           <img src="/marioIcon.png" className={classes.img} alt="my image" />
 
           <Button variant="contained" color="secondary" 
-          
             className={classes.addm} href="/addplayer" >
                 Add Player!
             </Button>

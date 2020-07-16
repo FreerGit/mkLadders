@@ -26,7 +26,7 @@ export default class WebServer {
 		this.app.get('/dropplayers', playerController.RemoveAllPlayers);
 
 		this.app.get('/matches', matchController.AllMatches);
-		this.app.post('/addmatch', matchController.AddMatch);
+		this.app.post('/matches', matchController.AddMatch);
 		this.app.get('/dropmatches', matchController.RemoveAllMatches);
 	}
 
