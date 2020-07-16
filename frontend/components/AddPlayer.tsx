@@ -72,6 +72,7 @@ const AddPlayers = () => {
             rating: 500
         }
         const data = await JSON.stringify(player)
+        console.log(data)
         const res = await fetch('http://localhost:8000/players', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

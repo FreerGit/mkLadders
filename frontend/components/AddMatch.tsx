@@ -49,6 +49,15 @@ interface PlayerContainerProps {
     AllPlayers: PlayerInterface[] | [],
 }
 
+interface Competitor {
+    placement: number,
+    competitor: string,
+
+}
+
+interface PlayersPlacingInMatch {
+    users: [Competitor]
+}
 
 
 let makePlacing:[][] = [];
@@ -56,22 +65,47 @@ let makePlacing:[][] = [];
 const AddPlayers = ({AllPlayers}: PlayerContainerProps) => {
     const [value, setValue] = React.useState();
     const [placing, setPlacing] = React.useState<[][]>([]);
-    const [prevAdded, setPrevAdded] = React.useState(0)
+    const [open, setOpen] = React.useState(false);
     const classes = useStyles();
-    console.log(makePlacing)
-    console.log(makePlacing)
-    console.log(makePlacing)
-    console.log(makePlacing)
-    console.log(makePlacing)
 
     const handleDelete = (data) => {
         
     }
+    
+    const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setOpen(false);
+      };
+
+    const submitMatch = async () => {
+        let allPlayersInMatch: PlayersPlacingInMatch = {users: []};
+        placing.forEach((place, index: number) => {
+                place.forEach((element: string) => {
+                        AllPlayers.forEach((player: PlayerInterface) => {
+                            if (element === player.name){
+                                allPlayersInMatch.users.push({ placement: index + 1 ,competitor: player._id})
+                            }
+                        })
+                    })
+            });
+        const data = await JSON.stringify(allPlayersInMatch)
+        const res = await fetch('http://localhost:8000/matches', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: data })
+        if(res.status === 400){
+            setOpen(true);   
+        }
+    
+    }
+
     const handlePlayerAdded = (val: string) => {
         makePlacing.push([val]);
-        setPrevAdded(prevAdded+1)
-        setPlacing(makePlacing)
-        console.log(placing)
+        const newPlacing = [...makePlacing]
+        setPlacing(newPlacing)
     }
 
     const players = AllPlayers.map((player) => {
@@ -82,7 +116,6 @@ const AddPlayers = ({AllPlayers}: PlayerContainerProps) => {
         return item.name.toLowerCase().indexOf(value.toLowerCase()) !== -1;
     }
     const onDragStart = (event, taskName) => {
-    	console.log('dragstart on div: ', taskName);
     	event.dataTransfer.setData("taskName", taskName);
 	}
 	const onDragOver = (event) => {
@@ -91,24 +124,19 @@ const AddPlayers = ({AllPlayers}: PlayerContainerProps) => {
 
 	const onDrop = (event, cat) => {
 	    let taskName = event.dataTransfer.getData("taskName");
-        console.log(taskName + 'on drop')
-
         let onDropIndex;
         makePlacing.forEach((place,index) => {
             if(place.indexOf(taskName) !== -1){
                 onDropIndex = index; 
-                console.log(index)
             }
         })
-        console.log(onDropIndex)
-        if(onDropIndex) {
+        if(onDropIndex !== undefined && onDropIndex >= 0 ) {
             const index = makePlacing[onDropIndex].indexOf(taskName);
             if (index > -1) {
                 makePlacing[onDropIndex].splice(index, 1);
-            }
+            } 
 
             makePlacing[cat].push(taskName);
-            console.log(makePlacing)
             const newPlacings = [...makePlacing];
             setPlacing(newPlacings)
         }
@@ -177,7 +205,7 @@ const AddPlayers = ({AllPlayers}: PlayerContainerProps) => {
                             draggable
                             onDragStart = {(event) => onDragStart(event, data)}
                             onDragOver={(event)=>onDragOver(event)}
-                            onDrop={(event)=>{onDrop(event, 0)}}
+                            onDrop={(event)=>{onDrop(event, 1)}}
                             //label={data}
                             //onDelete={handleDelete}
                             className={classes.chip}
@@ -202,7 +230,7 @@ const AddPlayers = ({AllPlayers}: PlayerContainerProps) => {
                             draggable
                             onDragStart = {(event) => onDragStart(event, data)}
                             onDragOver={(event)=>onDragOver(event)}
-                            onDrop={(event)=>{onDrop(event, 0)}}
+                            onDrop={(event)=>{onDrop(event, 2)}}
                             //label={data}
                             //onDelete={handleDelete}
                             className={classes.chip}
@@ -227,7 +255,7 @@ const AddPlayers = ({AllPlayers}: PlayerContainerProps) => {
                             draggable
                             onDragStart = {(event) => onDragStart(event, data)}
                             onDragOver={(event)=>onDragOver(event)}
-                            onDrop={(event)=>{onDrop(event, 0)}}
+                            onDrop={(event)=>{onDrop(event, 3)}}
                             //label={data}
                             //onDelete={handleDelete}
                             className={classes.chip}
@@ -238,12 +266,13 @@ const AddPlayers = ({AllPlayers}: PlayerContainerProps) => {
                         })} 
                     </div>
    
-            {/*<Button onClick={submitPlayer}>Submit</Button>
+            
+            <Button onClick={submitMatch}>Submit</Button>
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity="error">
-                    Someone already has that name, be original!
+                    Error creating match!
                 </Alert>
-            </Snackbar>*/}
+            </Snackbar>
         </div>
     )
 }
