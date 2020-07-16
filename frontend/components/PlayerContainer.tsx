@@ -6,6 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import {PlayerInterface} from '../src/declarations'
+import gameIcons from '../src/gameIcons';
 
 interface PlayerContainerProps {
     AllPlayers: PlayerInterface[] | [],
@@ -29,6 +30,9 @@ const useStyles = makeStyles((theme: Theme) =>
         display: 'flex',
         //justifyContent: 'space-between',
         alignItems: 'middle',
+        "&:last-child": {
+            paddingBottom: 0
+          }
         //color: 'black',
     },
     icon: {
@@ -65,7 +69,7 @@ const PlayerContainer = ({AllPlayers}: PlayerContainerProps) => {
                     <Card key={player._id}>
                     <CardContent className={classes.card} >
                       <Typography className={classes.icon} variant="body2" component="p">
-                      {player.driver}
+                      {<img src={gameIcons[player.driver]} alt="s" height="30px"/>}
                       </Typography>
                       <Typography className={classes.place} variant="body2" component="p">
                       {index + 1}
