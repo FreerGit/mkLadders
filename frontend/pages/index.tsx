@@ -8,7 +8,7 @@ interface PlayerContainerProps {
 }
 
 const IndexPage = ({AllPlayers}: PlayerContainerProps) => {
-    console.log(AllPlayers + 'gjfdshaglkjfhgkfldg')
+    //console.log(AllPlayers + 'gjfdshaglkjfhgkfldg')
 
     return ( 
         <>

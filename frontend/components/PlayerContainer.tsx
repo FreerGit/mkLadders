@@ -51,24 +51,19 @@ const useStyles = makeStyles(() =>
 
 
 const PlayerContainer = (props:any, {AllPlayers}: PlayerContainerProps) => {
-    if(props){
-        
+    const classes = useStyles();
+    let Players: PlayerInterface[];
+    if(props.AllPlayers){
+        Players = props.AllPlayers;
+    }else{
+        Players = AllPlayers;
     }
-  const classes = useStyles();
-  //const [players, setPlayers] = React.useState<Array<PlayerInterface>>(AllPlayers || []);
-  //console.log(players)
-  console.log(AllPlayers + 'in compo')
 
-  const sortedOnRating = AllPlayers.sort((a,b) => {
-      return b.rating - a.rating;
-  })
-  console.log(sortedOnRating)
- 
   return (
         <div className={classes.root}>
             {/* 
 // @ts-ignore */}
-            {AllPlayers.map((player: PlayerInterface, index: number) => (
+            {Players.map((player: PlayerInterface, index: number) => (
                     <Card key={player._id}>
                     <CardContent className={classes.card} >
                       <Typography className={classes.icon} variant="body2" component="p">
