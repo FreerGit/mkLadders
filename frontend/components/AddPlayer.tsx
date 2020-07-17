@@ -1,10 +1,9 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import { createStyles, makeStyles, Theme} from '@material-ui/core/styles';
-import { FormControl, InputLabel, Select, MenuItem, Button, Snackbar } from '@material-ui/core';
-import Alert from '@material-ui/lab/Alert';
+import { Select, MenuItem, Button } from '@material-ui/core';
+
 import gameIcons from '../src/gameIcons';
-import { render } from 'react-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -36,27 +35,30 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   }),
 );
-const AddPlayers = () => {
+const AddPlayers = (props: any) => {
+    if(props){
+        
+    }
     const classes = useStyles();
     const [name, setName] = React.useState('');
-    const [icon, setIcon] = React.useState(0);
-    const [open, setOpen] = React.useState(false);
+    const [icon, setIcon] = React.useState<number>(0);
+    //const [open, setOpen] = React.useState(false);
 
     const handleNameChange = (event: React.ChangeEvent<{ value: String }>) => {
         setName(event.target.value as string);
     };
 
-    const handleIconChange = (event: React.ChangeEvent<{ value: number }>) => {
+    const handleIconChange = (event: React.ChangeEvent<{ name?: string | undefined; value: unknown; }>) => {
         setIcon(event.target.value as number);
     };
 
-    const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
-        if (reason === 'clickaway') {
-          return;
-        }
+    //const handleClose = (event: SyntheticEvent<any, Event>, reason: SnackbarCloseReason) => {
+    //    if (reason === 'clickaway') {
+    //      return;
+    //    }
     
-        setOpen(false);
-      };
+    //    setOpen(false);
+    //  };
     const gameIconNames = gameIcons.map((name) => {
         const remove = name.replace("-", " ");
         const removePathChars = remove.replace(/\.[^\/.]+$/, "");
@@ -78,7 +80,7 @@ const AddPlayers = () => {
         headers: { 'Content-Type': 'application/json' },
         body: data })
         if(res.status === 400){
-            setOpen(true);   
+            //setOpen(true);   
         }
     }
 
@@ -113,11 +115,11 @@ const AddPlayers = () => {
                 </Select>
             </form>
             <Button onClick={submitPlayer}>Submit</Button>
-            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            {/*<Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity="error">
                     Someone already has that name, be original!
                 </Alert>
-            </Snackbar>
+            </Snackbar>*/}
         </div>
     )
 }

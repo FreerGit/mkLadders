@@ -20,23 +20,7 @@ const theme = createMuiTheme({
   },
 });
 
-const themeWhite = createMuiTheme({
-    palette: {
-      primary: {
-        main: '#000000',
-      },
-      secondary: {
-        main: '#FFFFFF',
-      },
-  
-      error: {
-        main: red.A400,
-      },
-      background: {
-        default: 'white',
-      },
-    },
-  });
+
   
 
 export default theme;

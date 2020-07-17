@@ -8,10 +8,13 @@ interface PlayerContainerProps {
 
 const addMatch = ({AllPlayers}:PlayerContainerProps) => {
     return (
-        <>
+        <>  
+       {/* 
+  // @ts-ignore */}
             <Layout>
             </Layout>
-
+{/* 
+  // @ts-ignore */}
             <AddMatch AllPlayers={AllPlayers}>
             </AddMatch>
         </>

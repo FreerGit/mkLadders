@@ -1,6 +1,6 @@
 export interface PlayerInterface {
-    _id: String,
-    name: String,
+    _id: string,
+    name: string,
     driver: number,
     rating: number
 }

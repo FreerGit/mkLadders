@@ -1,12 +1,8 @@
-import React, { useEffect } from 'react';
 import { createStyles, makeStyles, Theme} from '@material-ui/core/styles';
-import { MenuItem, Button, Snackbar, Paper, Chip } from '@material-ui/core';
-import Alert from '@material-ui/lab/Alert';
+import { Button } from '@material-ui/core';
 import {PlayerInterface } from '../src/declarations'
 import AutoComplete from 'react-autocomplete';
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { stringify } from 'querystring';
+import { useState } from 'react';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -56,37 +52,35 @@ interface Competitor {
 }
 
 interface PlayersPlacingInMatch {
-    users: [Competitor]
+    users: Competitor[]
 }
 
 
-let makePlacing:[][] = [];
+let makePlacing:Array<[string]> = [];
 
 const AddPlayers = ({AllPlayers}: PlayerContainerProps) => {
-    const [value, setValue] = React.useState();
-    const [placing, setPlacing] = React.useState<[][]>([]);
-    const [open, setOpen] = React.useState(false);
+    const [value, setValue] = useState<string>();
+    const [placing, setPlacing] = useState<Array<[string]>>([]);
+    //const [open, setOpen] = useState(false);
     const classes = useStyles();
 
-    const handleDelete = (data) => {
-        
-    }
     
-    const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
-        if (reason === 'clickaway') {
-          return;
-        }
+    //const handleClose = (reason?: string) => {
+    //    if (reason === 'clickaway') {
+    //      return;
+    //    }
     
-        setOpen(false);
-      };
+    //    setOpen(false);
+    //  };
 
     const submitMatch = async () => {
-        let allPlayersInMatch: PlayersPlacingInMatch = {users: []};
+        let allPlayersInMatch: PlayersPlacingInMatch;
+        allPlayersInMatch = {users: []};
         placing.forEach((place, index: number) => {
                 place.forEach((element: string) => {
                         AllPlayers.forEach((player: PlayerInterface) => {
                             if (element === player.name){
-                                allPlayersInMatch.users.push({ placement: index + 1 ,competitor: player._id})
+                                allPlayersInMatch.users.push({ placement: index + 1 ,competitor: player._id.toString()})
                             }
                         })
                     })
@@ -97,7 +91,7 @@ const AddPlayers = ({AllPlayers}: PlayerContainerProps) => {
         headers: { 'Content-Type': 'application/json' },
         body: data })
         if(res.status === 400){
-            setOpen(true);   
+            //setOpen(true);   
         }
     
     }
@@ -108,21 +102,17 @@ const AddPlayers = ({AllPlayers}: PlayerContainerProps) => {
         setPlacing(newPlacing)
     }
 
-    const players = AllPlayers.map((player) => {
-        return player.name;
-    })
-
     const matching = (item: PlayerInterface, value: string) => {
         return item.name.toLowerCase().indexOf(value.toLowerCase()) !== -1;
     }
-    const onDragStart = (event, taskName) => {
+    const onDragStart = (event: any, taskName: any) => {
     	event.dataTransfer.setData("taskName", taskName);
 	}
-	const onDragOver = (event) => {
+	const onDragOver = (event: any) => {
 	    event.preventDefault();
 	}
 
-	const onDrop = (event, cat) => {
+	const onDrop = (event: any, cat: any) => {
 	    let taskName = event.dataTransfer.getData("taskName");
         let onDropIndex;
         makePlacing.forEach((place,index) => {
@@ -149,7 +139,7 @@ const AddPlayers = ({AllPlayers}: PlayerContainerProps) => {
             </Button>
 
             <AutoComplete
-                getItemValue={(item: PlayerInterface) => item.name}
+                getItemValue={(item: any) => item.name}
                 items={AllPlayers}
                 value={value}
                 shouldItemRender={matching}
@@ -171,7 +161,6 @@ const AddPlayers = ({AllPlayers}: PlayerContainerProps) => {
                     >
             
                     { placing[0] && placing[0].map((data)=> {
-                        let icon;
                         return (
                             //
                             <div
@@ -197,7 +186,6 @@ const AddPlayers = ({AllPlayers}: PlayerContainerProps) => {
                     className={classes.draggableDiv}
                     >
                     { placing[1] && placing[1].map((data)=> {
-                        let icon;
                         return (
                             //
                             <div
@@ -222,7 +210,6 @@ const AddPlayers = ({AllPlayers}: PlayerContainerProps) => {
                     className={classes.draggableDiv}
                     >
                     { placing[2] && placing[2].map((data)=> {
-                        let icon;
                         return (
                             //
                             <div
@@ -247,7 +234,6 @@ const AddPlayers = ({AllPlayers}: PlayerContainerProps) => {
                     className={classes.draggableDiv}
                     >
                     { placing[3] && placing[3].map((data)=> {
-                        let icon;
                         return (
                             //
                             <div
@@ -268,11 +254,11 @@ const AddPlayers = ({AllPlayers}: PlayerContainerProps) => {
    
             
             <Button onClick={submitMatch}>Submit</Button>
-            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            {/*<Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity="error">
                     Error creating match!
                 </Alert>
-            </Snackbar>
+            </Snackbar>*/}
         </div>
     )
 }

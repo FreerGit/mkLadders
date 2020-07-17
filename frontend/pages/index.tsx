@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import Layout from '../components/Layout';
 import PlayerContainer from '../components/PlayerContainer';
 import {PlayerInterface} from '../src/declarations'

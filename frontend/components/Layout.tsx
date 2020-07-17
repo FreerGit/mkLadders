@@ -1,10 +1,9 @@
-import React, { ReactNode, useState } from 'react';
-import Link from 'next/link';
+import React from 'react';
 import Head from 'next/head';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Navbar from './Navbar';
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
+const useStyles = makeStyles(() => createStyles({
 	root: {
         flexGrow: 1,
         alignItems: 'center',
@@ -15,7 +14,10 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 
 }));
 
-const Layout = () => {
+const Layout = (props:any) => {
+    if(props){
+        
+    }
 	const classes = useStyles();
 	return (
         <div className={classes.root}>

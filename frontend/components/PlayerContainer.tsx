@@ -1,10 +1,8 @@
 import React from 'react';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import {PlayerInterface} from '../src/declarations'
 import gameIcons from '../src/gameIcons';
 
@@ -12,7 +10,7 @@ interface PlayerContainerProps {
     AllPlayers: PlayerInterface[] | [],
 }
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     root: {
         paddingLeft: '5%',
@@ -52,7 +50,10 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 
-const PlayerContainer = ({AllPlayers}: PlayerContainerProps) => {
+const PlayerContainer = (props:any, {AllPlayers}: PlayerContainerProps) => {
+    if(props){
+        
+    }
   const classes = useStyles();
   //const [players, setPlayers] = React.useState<Array<PlayerInterface>>(AllPlayers || []);
   //console.log(players)
@@ -65,6 +66,8 @@ const PlayerContainer = ({AllPlayers}: PlayerContainerProps) => {
  
   return (
         <div className={classes.root}>
+            {/* 
+// @ts-ignore */}
             {AllPlayers.map((player: PlayerInterface, index: number) => (
                     <Card key={player._id}>
                     <CardContent className={classes.card} >
