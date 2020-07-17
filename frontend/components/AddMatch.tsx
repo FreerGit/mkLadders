@@ -86,7 +86,7 @@ const AddPlayers = ({AllPlayers}: PlayerContainerProps) => {
                     })
             });
         const data = await JSON.stringify(allPlayersInMatch)
-        const res = await fetch('http://localhost:8000/matches', {
+        const res = await fetch('http://18.188.7.26:8000/matches', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: data })

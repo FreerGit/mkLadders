@@ -75,7 +75,7 @@ const AddPlayers = (props: any) => {
         }
         const data = await JSON.stringify(player)
         console.log(data)
-        const res = await fetch('http://localhost:8000/players', {
+        const res = await fetch('http://18.188.7.26:8000/players', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: data })
