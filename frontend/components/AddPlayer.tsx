@@ -6,7 +6,6 @@ import { Select, MenuItem, Button } from '@material-ui/core';
 import gameIcons from '../src/gameIcons';
 import Snackbar, { SnackbarCloseReason } from '@material-ui/core/Snackbar/Snackbar';
 import Alert from '@material-ui/lab/Alert/Alert';
-import Router from 'next/dist/next-server/server/router';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -47,7 +46,6 @@ const useStyles = makeStyles((theme: Theme) =>
     goBack: {
         backgroundColor: '#424242',
         color: '#E8E8E8',
-        // marginLeft: '5%',
     },
     input: {
         color: '#E8E8E8',
@@ -95,13 +93,14 @@ const AddPlayers = (props: any) => {
             window.location.replace('/');
         }
     }
-       const handleClose = (event: any, reason: SnackbarCloseReason) => {
-       if (reason === 'clickaway') {
-         return;
-       }
 
-       setOpen(false);
-     };
+    const handleClose = (event: any, reason: SnackbarCloseReason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
 
     return (
         <div className={classes.container}>
