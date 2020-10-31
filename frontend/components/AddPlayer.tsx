@@ -4,26 +4,29 @@ import { createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import { Select, MenuItem, Button } from '@material-ui/core';
 
 import gameIcons from '../src/gameIcons';
+import Snackbar, { SnackbarCloseReason } from '@material-ui/core/Snackbar/Snackbar';
+import Alert from '@material-ui/lab/Alert/Alert';
+import Router from 'next/dist/next-server/server/router';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
         paddingLeft: '5%',
         paddingRight: '5%',
-        backgroundColor: 'red',
+        backgroundColor: '#2E2E2E',
         maxWidth: '600px',
         width: '100%',
         margin: '20px auto',
         display: 'block',
-        alignSelf: 'center',
+        alignSelf: 'middle',
+                color: '#E8E8E8',
+
     },
     root: {
-      '& > *': {
-        margin: theme.spacing(1),
-        width: '25ch',
-    },
-    alignItems: 'middle',
-    alignSelf: 'middle',
+        display: 'flex',
+        justifyContent: 'space-evenly',
+        marginBottom: '5%',
+        color: '#E8E8E8',
     },
     formControl: {
         margin: theme.spacing(1),
@@ -33,16 +36,29 @@ const useStyles = makeStyles((theme: Theme) =>
         maxHeight: '250px',
         overflow: 'auto',
     },
+    buttons: {
+        display: 'flex',
+        justifyContent: 'space-evenly',
+    },
+    submit: {
+        backgroundColor: '#424242',
+        color: '#E8E8E8',
+    },
+    goBack: {
+        backgroundColor: '#424242',
+        color: '#E8E8E8',
+        // marginLeft: '5%',
+    },
+    input: {
+        color: '#E8E8E8',
+    }
   }),
 );
 const AddPlayers = (props: any) => {
-    if(props){
-        
-    }
     const classes = useStyles();
     const [name, setName] = React.useState('');
     const [icon, setIcon] = React.useState<number>(0);
-    //const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(false);
 
     const handleNameChange = (event: React.ChangeEvent<{ value: String }>) => {
         setName(event.target.value as string);
@@ -52,13 +68,6 @@ const AddPlayers = (props: any) => {
         setIcon(event.target.value as number);
     };
 
-    //const handleClose = (event: SyntheticEvent<any, Event>, reason: SnackbarCloseReason) => {
-    //    if (reason === 'clickaway') {
-    //      return;
-    //    }
-    
-    //    setOpen(false);
-    //  };
     const gameIconNames = gameIcons.map((name) => {
         const remove = name.replace("-", " ");
         const removePathChars = remove.replace(/\.[^\/.]+$/, "");
@@ -75,24 +84,34 @@ const AddPlayers = (props: any) => {
         }
         const data = await JSON.stringify(player)
         console.log(data)
-        const res = await fetch('http://18.188.7.26:8000/players', {
+        const res = await fetch('http://localhost:8000/players', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: data })
         if(res.status === 400){
-            //setOpen(true);   
+            setOpen(true);   
+        }
+        else{
+            window.location.replace('/');
         }
     }
+       const handleClose = (event: any, reason: SnackbarCloseReason) => {
+       if (reason === 'clickaway') {
+         return;
+       }
+
+       setOpen(false);
+     };
 
     return (
         <div className={classes.container}>
-            <Button variant="contained" href="/">
-                Go Back
-            </Button>
             <form className={classes.root} noValidate autoComplete="off">
                 <TextField id="standard-basic" label="Name" 
+                defaultValue="color"
                 value={name}
                 onChange={handleNameChange}
+                InputLabelProps={{className: classes.input}}
+                inputProps={{className: classes.input}}
                 />
             
                 <Select
@@ -100,13 +119,14 @@ const AddPlayers = (props: any) => {
                 id="demo-simple-select"
                 value={icon}
                 onChange={handleIconChange}
-
+                style={{color: '#E8E8E8'}}
                 >   
                   {gameIcons.map((icon, index) => {
                      // name.toLocaleUpperCase();
                       return (
     
-                          <MenuItem value={index} key={index}>
+                          <MenuItem style={{backgroundColor: 
+                          '#424242', color: '#E8E8E8'}}value={index} key={index}>
                             <img src={icon} height="30px" alt="my image" />
                             {gameIconNames[index]}
                         </MenuItem>
@@ -114,12 +134,15 @@ const AddPlayers = (props: any) => {
                     })}
                 </Select>
             </form>
-            <Button onClick={submitPlayer}>Submit</Button>
-            {/*<Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity="error">
-                    Someone already has that name, be original!
+            <div className={classes.buttons}>
+            <Button className={classes.submit} onClick={submitPlayer}>Submit</Button>
+            <Button className={classes.goBack} href="/">Go Back</Button>
+            </div>
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                <Alert severity="error">
+                    Your name is either too long or it's taken!
                 </Alert>
-            </Snackbar>*/}
+            </Snackbar>
         </div>
     )
 }

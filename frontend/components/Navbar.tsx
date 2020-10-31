@@ -35,8 +35,9 @@ const ButtonAppBar = () => {
             className={classes.addm} href="/addmatch">
                 Add Match!
             </Button>
-
+          <a href='/' >
           <img src="/marioIcon.png" className={classes.img} alt="my image" />
+          </a>
 
           <Button variant="contained" color="secondary" 
             className={classes.addm} href="/addplayer" >

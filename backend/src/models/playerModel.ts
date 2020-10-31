@@ -4,7 +4,7 @@ import uniqueValidator from 'mongoose-unique-validator';
 const playerDetailSchema: Schema = new Schema({
 	id: String,
 	driver: Number,
-	name: { type: String, unique: true },
+	name: { type: String, unique: true , maxlength: 30},
 	rating: Number,
 });
 

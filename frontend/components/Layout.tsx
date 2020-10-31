@@ -8,7 +8,6 @@ const useStyles = makeStyles(() => createStyles({
         flexGrow: 1,
         alignItems: 'center',
         width: '100%',
-        backgroundColor: 'black',
         overflow: 'auto',
 	},
 
@@ -26,7 +25,7 @@ const Layout = (props:any) => {
                 <meta charSet="utf-8" />
                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
 			</Head >
-            <header color='primary'>
+            <header color='#121212'>
                 <Navbar />
 			</header>
 

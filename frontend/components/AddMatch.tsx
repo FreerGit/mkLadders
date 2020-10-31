@@ -9,7 +9,6 @@ const useStyles = makeStyles((theme: Theme) =>
     container: {
         paddingLeft: '5%',
         paddingRight: '5%',
-        backgroundColor: 'red',
         maxWidth: '600px',
         width: '100%',
         margin: '20px auto',
@@ -86,7 +85,7 @@ const AddPlayers = ({AllPlayers}: PlayerContainerProps) => {
                     })
             });
         const data = await JSON.stringify(allPlayersInMatch)
-        const res = await fetch('http://18.188.7.26:8000/matches', {
+        const res = await fetch('http://localhost:8000/matches', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: data })

@@ -8,12 +8,9 @@ interface PlayerContainerProps {
 }
 
 const IndexPage = ({AllPlayers}: PlayerContainerProps) => {
-    //console.log(AllPlayers + 'gjfdshaglkjfhgkfldg')
-
     return ( 
         <>
         <Layout>
-            <h1>Hello Next.js </h1>
         </Layout>
         <PlayerContainer AllPlayers={AllPlayers}>
 
@@ -26,7 +23,6 @@ const IndexPage = ({AllPlayers}: PlayerContainerProps) => {
 export async function getServerSideProps () {
     const res = await fetch(`http://backend:8000/players`)
     const json = await res.json()
-    console.log(json)
     // Pass data to the page via props
     return { props: { AllPlayers: json } }
 }

@@ -1,13 +1,16 @@
 // import { Request, Response } from 'express';
 import { Request, Response } from 'express';
-import { Player } from '../models/playerModel';
+import { Player, playerDetailInterface } from '../models/playerModel';
 
 export const AllPlayers = async (req: Request, res: Response) => {
-	await Player.find({}).exec((err: any, players: any) => {
+	await Player.find({}).exec((err: any, players: playerDetailInterface[]) => {
 		if (err) {
 			res.status(400);
 			res.send(err);
 		} else {
+			players = players.sort(
+				(a: playerDetailInterface,b: playerDetailInterface) => 
+				(a.rating < b.rating) ? 1 : -1)
 			res.send(players);
 		}
 	});

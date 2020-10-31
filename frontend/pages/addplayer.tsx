@@ -5,7 +5,7 @@ const addPlayer = () => {
         <>
             <Layout>
             </Layout>
-
+{/*  */}
             <AddPlayer>
             </AddPlayer>
         </>
