@@ -18,14 +18,15 @@ const useStyles = makeStyles((theme: Theme) =>
         margin: '20px auto',
         display: 'block',
         alignSelf: 'middle',
-                color: '#E8E8E8',
-
+        color: '#E8E8E8',
+        minHeight: '150px',
     },
     root: {
         display: 'flex',
         justifyContent: 'space-evenly',
         marginBottom: '5%',
         color: '#E8E8E8',
+        flexDirection: 'column',
     },
     formControl: {
         margin: theme.spacing(1),
@@ -38,6 +39,7 @@ const useStyles = makeStyles((theme: Theme) =>
     buttons: {
         display: 'flex',
         justifyContent: 'space-evenly',
+        marginTop: 'auto',
     },
     submit: {
         backgroundColor: '#424242',
@@ -106,7 +108,7 @@ const AddPlayers = (props: any) => {
         <div className={classes.container}>
             <form className={classes.root} noValidate autoComplete="off">
                 <TextField id="standard-basic" label="Name" 
-                defaultValue="color"
+                // defaultValue="color"
                 value={name}
                 onChange={handleNameChange}
                 InputLabelProps={{className: classes.input}}

@@ -2,42 +2,52 @@ import { createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import {PlayerInterface } from '../src/declarations'
 import AutoComplete from 'react-autocomplete';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import Alert from '@material-ui/lab/Alert/Alert';
+import Snackbar from '@material-ui/core/Snackbar/Snackbar';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Icon from '@material-ui/core/Icon/Icon';
+import PlayerContainer from './PlayerContainer';
 
 const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    container: {
-        paddingLeft: '5%',
-        paddingRight: '5%',
-        maxWidth: '600px',
-        width: '100%',
-        margin: '20px auto',
-        display: 'block',
-        alignSelf: 'center',
-    },
-    root: {
-        display: 'flex',
-        justifyContent: 'center',
-        flexWrap: 'wrap',
-        listStyle: 'none',
-        padding: theme.spacing(0.5),
-        margin: 0,
-        width: '100%'
-      },
-      draggableDiv: {
-        display: 'flex',
-        justifyContent: 'center',
-        flexWrap: 'wrap',
-        listStyle: 'none',
-        padding: theme.spacing(0.5),
-        margin: 0,
-        width: '100%',
-        minHeight: '60px'
-      },
-      chip: {
-        margin: theme.spacing(0.5),
-    },
-}),
+    createStyles({
+        container: {
+            paddingLeft: '5%',
+            paddingRight: '5%',
+            maxWidth: '600px',
+            width: '100%',
+            margin: '20px auto',
+            display: 'block',
+            alignSelf: 'center',
+            backgroundColor: '#2E2E2E',
+            minHeight: '400px',
+        },
+        root: {
+            display: 'flex',
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+            listStyle: 'none',
+            padding: theme.spacing(0.5),
+            margin: 0,
+            width: '100%'
+        },
+        chip: {
+            margin: theme.spacing(0.5),
+        },
+        button: {
+            backgroundColor: '#424242',
+            color: '#E8E8E8',
+        },
+        playerContainer: {
+            display: 'flex',
+            flexDirection: 'column',
+        },
+        player: {
+            marginTop: 'auto',
+        },
+    }),
 );
 
 interface PlayerContainerProps {
@@ -47,89 +57,63 @@ interface PlayerContainerProps {
 interface Competitor {
     placement: number,
     competitor: string,
-
 }
 
-interface PlayersPlacingInMatch {
+interface PlayersPlacements { 
     users: Competitor[]
 }
 
-
-let makePlacing:Array<[string]> = [];
-
 const AddPlayers = ({AllPlayers}: PlayerContainerProps) => {
     const [value, setValue] = useState<string>();
-    const [placing, setPlacing] = useState<Array<[string]>>([]);
-    //const [open, setOpen] = useState(false);
+    const [placing, setPlacing] = useState<Array<PlayerInterface>>([]);
+    const [open, setOpen] = useState(false);
     const classes = useStyles();
 
-    
-    //const handleClose = (reason?: string) => {
-    //    if (reason === 'clickaway') {
-    //      return;
-    //    }
-    
-    //    setOpen(false);
-    //  };
-
     const submitMatch = async () => {
-        let allPlayersInMatch: PlayersPlacingInMatch;
-        allPlayersInMatch = {users: []};
-        placing.forEach((place, index: number) => {
-                place.forEach((element: string) => {
-                        AllPlayers.forEach((player: PlayerInterface) => {
-                            if (element === player.name){
-                                allPlayersInMatch.users.push({ placement: index + 1 ,competitor: player._id.toString()})
-                            }
-                        })
-                    })
-            });
+        let allPlayersInMatch: PlayersPlacements = {users: []};
+        placing.forEach((player, index: number) => {
+            allPlayersInMatch.users.push({ placement: index + 1 ,competitor: player._id.toString()})
+        })        
         const data = await JSON.stringify(allPlayersInMatch)
         const res = await fetch('http://localhost:8000/matches', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: data })
         if(res.status === 400){
-            //setOpen(true);   
+            setOpen(true);   
+        }
+        if(res.status === 200){
+            window.location.replace('/');
         }
     
     }
 
-    const handlePlayerAdded = (val: string) => {
-        makePlacing.push([val]);
-        const newPlacing = [...makePlacing]
-        setPlacing(newPlacing)
+    const handlePlayerAdded = (player: PlayerInterface) => {
+        const newPlacing = [...placing];
+        newPlacing.push(player);
+        setPlacing(newPlacing);
     }
 
     const matching = (item: PlayerInterface, value: string) => {
-        return item.name.toLowerCase().indexOf(value.toLowerCase()) !== -1;
+        return (!placing.find((element) => item === element))
     }
-    const onDragStart = (event: any, taskName: any) => {
-    	event.dataTransfer.setData("taskName", taskName);
-	}
-	const onDragOver = (event: any) => {
-	    event.preventDefault();
-	}
 
-	const onDrop = (event: any, cat: any) => {
-	    let taskName = event.dataTransfer.getData("taskName");
-        let onDropIndex;
-        makePlacing.forEach((place,index) => {
-            if(place.indexOf(taskName) !== -1){
-                onDropIndex = index; 
-            }
-        })
-        if(onDropIndex !== undefined && onDropIndex >= 0 ) {
-            const index = makePlacing[onDropIndex].indexOf(taskName);
-            if (index > -1) {
-                makePlacing[onDropIndex].splice(index, 1);
-            } 
-
-            makePlacing[cat].push(taskName);
-            const newPlacings = [...makePlacing];
-            setPlacing(newPlacings)
+    const updatePlacement = (player: PlayerInterface, up: boolean) => {
+        const newPlacing = [...placing];
+        const currPlacement = newPlacing.findIndex((element) => element == player);
+        if(up && currPlacement != 0){
+            newPlacing.splice(currPlacement - 1, 0, newPlacing.splice(currPlacement, 1)[0]);
         }
-	}
+        else if(!up && newPlacing[-1] != player){
+            newPlacing.splice(currPlacement + 1, 0, newPlacing.splice(currPlacement, 1)[0]);
+        }
+        setPlacing(newPlacing)
+    }
+
+    const removeFromPlacement = (player: PlayerInterface) => {
+        const newPlacing = [...placing];
+        setPlacing(newPlacing.filter((element) => element !== player));
+    }
 
     return (
         <div className={classes.container}>
@@ -144,120 +128,34 @@ const AddPlayers = ({AllPlayers}: PlayerContainerProps) => {
                 shouldItemRender={matching}
 
                 renderItem={(item, isHighlighted) =>
-                    <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                    {item.name}
-                    </div>
+                    <div style={{ background: isHighlighted ? '#E8E8E8' : '#424242' }}>
+                        {item.name}
+                    </ div>
                 }
                 
                 onChange={(e) => setValue(e.target.value)}
-                onSelect={(val) => handlePlayerAdded(val)}
+                onSelect={(val, item) => handlePlayerAdded(item)}
             />
-                   <div 
-                    onDragOver={(event)=>onDragOver(event)}
-                    onDrop={(event)=>{onDrop(event, 0)}}
-                    key={0}
-                    className={classes.draggableDiv}
-                    >
-            
-                    { placing[0] && placing[0].map((data)=> {
-                        return (
-                            //
-                            <div
-                            key={data}
-                            draggable
-                            onDragStart = {(event) => onDragStart(event, data)}
-                            onDragOver={(event)=>onDragOver(event)}
-                            onDrop={(event)=>{onDrop(event, 0)}}
-                            //label={data}
-                            //onDelete={handleDelete}
-                            className={classes.chip}
-                            >
-                            {data}
-                            </div>
-                            );
-                        })}
+            <div className={classes.playerContainer}>
 
+            {placing.map(player => {
+                return (
+                    <div className={classes.player}>
+                        {player.name}
+                        <Icon onClick={() => updatePlacement(player, true)} component={ExpandLessIcon}></Icon>
+                        <Icon onClick={() => updatePlacement(player, false)} component={ExpandMoreIcon}></Icon>
+                        <Icon onClick={() => removeFromPlacement(player)} component={DeleteIcon}></Icon>
                     </div>
-                    <div 
-                    onDragOver={(event)=>onDragOver(event)}
-                    onDrop={(event)=>{onDrop(event, 1)}}
-                    key={1}
-                    className={classes.draggableDiv}
-                    >
-                    { placing[1] && placing[1].map((data)=> {
-                        return (
-                            //
-                            <div
-                            key={data}
-                            draggable
-                            onDragStart = {(event) => onDragStart(event, data)}
-                            onDragOver={(event)=>onDragOver(event)}
-                            onDrop={(event)=>{onDrop(event, 1)}}
-                            //label={data}
-                            //onDelete={handleDelete}
-                            className={classes.chip}
-                            >
-                            {data}
-                            </div>
-                            );
-                        })}
-                    </div>
-                    <div 
-                    onDragOver={(event)=>onDragOver(event)}
-                    onDrop={(event)=>{onDrop(event, 2)}}
-                    key={2}
-                    className={classes.draggableDiv}
-                    >
-                    { placing[2] && placing[2].map((data)=> {
-                        return (
-                            //
-                            <div
-                            key={data}
-                            draggable
-                            onDragStart = {(event) => onDragStart(event, data)}
-                            onDragOver={(event)=>onDragOver(event)}
-                            onDrop={(event)=>{onDrop(event, 2)}}
-                            //label={data}
-                            //onDelete={handleDelete}
-                            className={classes.chip}
-                            >
-                            {data}
-                            </div>
-                            );
-                        })} 
-                    </div>
-                    <div 
-                    onDragOver={(event)=>onDragOver(event)}
-                    onDrop={(event)=>{onDrop(event, 3)}}
-                    key={3}
-                    className={classes.draggableDiv}
-                    >
-                    { placing[3] && placing[3].map((data)=> {
-                        return (
-                            //
-                            <div
-                            key={data}
-                            draggable
-                            onDragStart = {(event) => onDragStart(event, data)}
-                            onDragOver={(event)=>onDragOver(event)}
-                            onDrop={(event)=>{onDrop(event, 3)}}
-                            //label={data}
-                            //onDelete={handleDelete}
-                            className={classes.chip}
-                            >
-                            {data}
-                            </div>
-                            );
-                        })} 
-                    </div>
-   
+                )
+            })}
+            </div>
             
             <Button onClick={submitMatch}>Submit</Button>
-            {/*<Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity="error">
+            <Snackbar open={open} autoHideDuration={6000}>
+                <Alert severity="error">
                     Error creating match!
                 </Alert>
-            </Snackbar>*/}
+            </Snackbar>
         </div>
     )
 }
