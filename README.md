@@ -1,6 +1,5 @@
-# mkLadders
+# Mario Kart Ladder
 
+npm install
 
-BEFORE DEPLOYMENT!
-
-REMOVE ALL DROP ENDPONTS
+docker-compose up

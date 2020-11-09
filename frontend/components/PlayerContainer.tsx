@@ -5,8 +5,6 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import {PlayerInterface} from '../src/declarations'
 import gameIcons from '../src/gameIcons';
-import theme from '../src/theme';
-
 
 interface PlayerContainerProps {
     AllPlayers: PlayerInterface[] | [],

@@ -8,4 +8,6 @@ RUN npm install
 #cache what is already donwloaded
 COPY . .
 
-CMD [ "npm", "run", "dev" ]
+RUN npm run build
+
+CMD [ "npm", "start" ]
