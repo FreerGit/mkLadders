@@ -14,8 +14,6 @@ import PlayerContainer from './PlayerContainer';
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         container: {
-            paddingLeft: '5%',
-            paddingRight: '5%',
             maxWidth: '600px',
             width: '100%',
             margin: '20px auto',
@@ -23,6 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
             alignSelf: 'center',
             backgroundColor: '#2E2E2E',
             minHeight: '400px',
+            position: 'relative',
         },
         root: {
             display: 'flex',
@@ -42,9 +41,30 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         playerContainer: {
             display: 'flex',
+            marginTop: 'auto',
+            alignItems: 'center',
             flexDirection: 'column',
+            maxWidth: '400px',
+            margin: '0 auto',
         },
         player: {
+            display: 'flex',
+            justifyContent: 'space-between',
+            marginTop: 'auto',
+            width: '100%',
+        },
+        buttons: {
+            display: 'flex',
+            justifyContent: 'space-evenly',
+            marginTop: 'auto',
+            position: 'absolute',
+            minWidth: '100%',
+            bottom: '50px',
+
+        },
+        autocomplete: {
+            display: 'flex',
+            justifyContent: 'space-evenly',
             marginTop: 'auto',
         },
     }),
@@ -95,7 +115,9 @@ const AddPlayers = ({AllPlayers}: PlayerContainerProps) => {
     }
 
     const matching = (item: PlayerInterface, value: string) => {
-        return (!placing.find((element) => item === element))
+        const matches = item.name.toLowerCase().indexOf(value.toLowerCase()) !== -1;
+        const notChosen = !placing.find((element) => element === item)
+        return matches && notChosen
     }
 
     const updatePlacement = (player: PlayerInterface, up: boolean) => {
@@ -117,40 +139,44 @@ const AddPlayers = ({AllPlayers}: PlayerContainerProps) => {
 
     return (
         <div className={classes.container}>
-            <Button variant="contained" href="/">
-                Go Back
-            </Button>
+            <div className={classes.autocomplete}>
+                <AutoComplete
+                    menuStyle={{ maxHeight: 250, overflow: 'hidden scroll', position: 'fixed'}}
+                    getItemValue={(item: any) => item.name}
+                    items={AllPlayers}
+                    value={value}
+                    shouldItemRender={matching}
+                    renderItem={(item, isHighlighted) =>
+                        <div style={{ background: isHighlighted ? '#E8E8E8' : '#424242' }}>
+                            {item.name}
+                        </ div>
+                    }
+                    onChange={(e) => setValue(e.target.value)}
+                    onSelect={(_, item) => handlePlayerAdded(item)}
+                />
+            </div>
 
-            <AutoComplete
-                getItemValue={(item: any) => item.name}
-                items={AllPlayers}
-                value={value}
-                shouldItemRender={matching}
-
-                renderItem={(item, isHighlighted) =>
-                    <div style={{ background: isHighlighted ? '#E8E8E8' : '#424242' }}>
-                        {item.name}
-                    </ div>
-                }
-                
-                onChange={(e) => setValue(e.target.value)}
-                onSelect={(val, item) => handlePlayerAdded(item)}
-            />
             <div className={classes.playerContainer}>
-
             {placing.map(player => {
                 return (
                     <div className={classes.player}>
-                        {player.name}
-                        <Icon onClick={() => updatePlacement(player, true)} component={ExpandLessIcon}></Icon>
-                        <Icon onClick={() => updatePlacement(player, false)} component={ExpandMoreIcon}></Icon>
-                        <Icon onClick={() => removeFromPlacement(player)} component={DeleteIcon}></Icon>
+                        <div >
+                            {player.name}
+                        </div>
+                        <div>
+                            <Icon onClick={() => updatePlacement(player, true)} component={ExpandLessIcon}></Icon>
+                            <Icon onClick={() => updatePlacement(player, false)} component={ExpandMoreIcon}></Icon>
+                            <Icon onClick={() => removeFromPlacement(player)} component={DeleteIcon}></Icon>
+                        </div>
                     </div>
                 )
             })}
             </div>
-            
-            <Button onClick={submitMatch}>Submit</Button>
+            <div className={classes.buttons}>
+                <Button className={classes.button} href="/">Go Back</Button>
+                <Button className={classes.button} onClick={submitMatch}>Submit</Button>
+            </div>
+
             <Snackbar open={open} autoHideDuration={6000}>
                 <Alert severity="error">
                     Error creating match!

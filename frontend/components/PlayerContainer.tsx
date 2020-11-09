@@ -41,7 +41,8 @@ const useStyles = makeStyles(() =>
         paddingLeft: '10%',
     },
     name: {
-        paddingLeft: '10%',
+        flex: 'auto',
+        textAlign: 'end',
     },
     rating: {
         flex: 'auto',
@@ -86,7 +87,7 @@ const PlayerContainer = (props:any, {AllPlayers}: PlayerContainerProps) => {
                 {index + 1}
                 </Typography>
                 <Typography  className={classes.name} variant="body2" component="p">
-                  {player.name}
+                  {player.name }
                 </Typography>
                 <Typography className={classes.rating} variant="body2" component="p">
                 {player.rating}

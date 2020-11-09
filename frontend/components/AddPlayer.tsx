@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
         display: 'block',
         alignSelf: 'middle',
         color: '#E8E8E8',
-        minHeight: '150px',
+        minHeight: '200px',
     },
     root: {
         display: 'flex',
