@@ -9,24 +9,17 @@ interface PlayerContainerProps {
 const addMatch = ({AllPlayers}:PlayerContainerProps) => {
     return (
         <>  
-       {/* 
-  // @ts-ignore */}
-            <Layout>
-            </Layout>
-{/* 
-  // @ts-ignore */}
-            <AddMatch AllPlayers={AllPlayers}>
-            </AddMatch>
+{/* @ts-ignore */}
+            <Layout/>
+{/* @ts-ignore */}
+            <AddMatch AllPlayers={AllPlayers}/>
         </>
     )
 }
 
-
 export async function getServerSideProps () {
     const res = await fetch(`http://backend:8000/players`)
     const json = await res.json()
-    console.log(json) 
-    // Pass data to the page via props
     return { props: { AllPlayers: json } }
 }
 

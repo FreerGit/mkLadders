@@ -9,7 +9,6 @@ import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Icon from '@material-ui/core/Icon/Icon';
-import PlayerContainer from './PlayerContainer';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

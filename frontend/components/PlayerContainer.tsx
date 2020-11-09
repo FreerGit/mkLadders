@@ -74,8 +74,7 @@ const PlayerContainer = (props:any, {AllPlayers}: PlayerContainerProps) => {
     }
   return (
         <div className={classes.root}>
-            {/* 
-// @ts-ignore */}
+            {/* @ts-ignore */}
           {Players.map((player: PlayerInterface, index: number) => (
             <Card key={player._id} style={{backgroundColor: medalsForPlacing(index),
                                            color: index > 0 ? '#E8E8E8' : 'black'}}>

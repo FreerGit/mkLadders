@@ -10,11 +10,8 @@ interface PlayerContainerProps {
 const IndexPage = ({AllPlayers}: PlayerContainerProps) => {
     return ( 
         <>
-        <Layout>
-        </Layout>
-        <PlayerContainer AllPlayers={AllPlayers}>
-
-        </PlayerContainer>
+            <Layout/>
+            <PlayerContainer AllPlayers={AllPlayers}/>
         </>
     )
 }

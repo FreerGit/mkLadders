@@ -48,13 +48,10 @@ export default class RatingCalculator {
 
 					// How did player place relative to foe?
 					if (curPlace < oppPlace) {
-						// console.log(`Won: ${this.race[player].name} Lost: ${this.race[foe].name}`);
 						s = 1;
 					} else if (curPlace === oppPlace) {
-						// console.log(`tie: ${this.race[player].name} tie: ${this.race[foe].name}`);
 						s = 0.5;
 					} else {
-						// console.log(`Lost: ${this.race[player].name} Won: ${this.race[foe].name}`);
 						s = 0;
 					}
 					// Again, see official elo formula

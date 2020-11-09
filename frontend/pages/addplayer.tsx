@@ -3,10 +3,8 @@ import AddPlayer from '../components/AddPlayer';
 const addPlayer = () => {
     return (
         <>
-            <Layout>
-            </Layout>
-            <AddPlayer>
-            </AddPlayer>
+            <Layout/>
+            <AddPlayer/>
         </>
     )
 }

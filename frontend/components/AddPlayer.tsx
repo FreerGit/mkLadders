@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }
   }),
 );
-const AddPlayers = (props: any) => {
+const AddPlayers = () => {
     const classes = useStyles();
     const [name, setName] = React.useState('');
     const [icon, setIcon] = React.useState<number>(0);
@@ -83,7 +83,6 @@ const AddPlayers = (props: any) => {
             rating: 500
         }
         const data = await JSON.stringify(player)
-        console.log(data)
         const res = await fetch('http://localhost:8000/players', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -100,7 +99,6 @@ const AddPlayers = (props: any) => {
         if (reason === 'clickaway') {
             return;
         }
-
         setOpen(false);
     };
 
@@ -108,7 +106,6 @@ const AddPlayers = (props: any) => {
         <div className={classes.container}>
             <form className={classes.root} noValidate autoComplete="off">
                 <TextField id="standard-basic" label="Name" 
-                // defaultValue="color"
                 value={name}
                 onChange={handleNameChange}
                 InputLabelProps={{className: classes.input}}
@@ -123,7 +120,6 @@ const AddPlayers = (props: any) => {
                 style={{color: '#E8E8E8'}}
                 >   
                   {gameIcons.map((icon, index) => {
-                     // name.toLocaleUpperCase();
                       return (
     
                           <MenuItem style={{backgroundColor: 
