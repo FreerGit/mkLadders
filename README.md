@@ -6,6 +6,13 @@ It's live at: mkladders.se!
 
 You may add matches and players as you wish, my own ladder is on a different server.
 
+## How and Why 
+Backend: Typescript, Express JS
+
+Frontend: React, Server-side-rendering with Next JS, Material UI
+
+Why: Mostly just for fun but i also wanted to actually deploy a website with docker containers. The website is hosted on a EC2 in AWS.
+
 ## Install and run
 once you've cloned the reposity run `npm i` root, frontend and backend directories. 
 Then run `docker-compose build` in the root directory and lastly `docker-compose up`.
