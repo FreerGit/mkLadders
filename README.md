@@ -9,7 +9,9 @@ You may add matches and players as you wish, my own ladder is on a different ser
 ## How and Why 
 Backend: Typescript, Express JS
 
-Frontend: React, Server-side-rendering with Next JS, Material UI
+Frontend: React, Server-side-rendering with Next JS, Material UI, Mongoose
+
+Database: MongoDB
 
 Why: Mostly just for fun but i also wanted to actually deploy a website with docker containers. The website is hosted on a EC2 in AWS.
 
