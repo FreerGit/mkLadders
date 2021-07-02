@@ -21,13 +21,3 @@ Then run `docker-compose build` in the root directory and lastly `docker-compose
 
 The website should then be reachable at [localhost:3000](http://localhost:3000).
 
-## Future work
-- I would like to have my ladder on the live website, however this would require multiple ladder instances and some sort of authentication.
-
-- When ratings are updated, show how much someone gained/lost in the ladder for example | 1   Fredrik    (-50) 598 |
-
-- A ladder would be accessible with a common password/hash that all players within that ladder agrees on. Because of this all players (group of friends) can access the ladder they have the password for, this would atleast give simple security.
-
-- The UI is still scrappy.
-
-- The ability to revert a match incase the match was incorrectly made by the users.
