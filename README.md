@@ -2,10 +2,6 @@
 
 A simple CRUD website to keep track over our Mario Kart games with a common ladder!
 
-It's live at: http://mkladders.se!
-
-You may add matches and players as you wish, my own ladder is on a different server.
-
 ## How and Why 
 Backend: Typescript, Express JS
 
